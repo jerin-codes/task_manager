@@ -17,6 +17,7 @@
                 <tr>
                     <th>SI. No</th>
                     <th>Full Name</th>
+                    <th>Designation</th>
                     <th>Email</th>
                     <th>Date Added</th>
                     <th>Actions</th>
@@ -27,10 +28,19 @@
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $user->name }} </td>
+                        <td>{{ $user->designation }}</td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->created_at}}</td>
-                        <td><button > View</button><button  style="background-color: bluephp">Edit</button><button  style="background-color: red">Delete</button></td>
-                    </tr>
+                        <td><button > View</button><button  id="employee-edit" style="background-color: bluephp">Edit</button>
+                            <form action="{{route("company.remove.employee")}}" method="POST" style="display: inline">
+                               @csrf
+                               @method("delete") 
+                            <input type="hidden" name="employee_id" value="{{$user->id}}">
+                            <button  style="background-color: red">Delete</button>
+                            </form>  
+                        </td>
+                                
+                        </tr>
                 @endforeach
             </tbody>
         </table>
@@ -48,6 +58,44 @@
             <div class="form-group">
                 <label for="first_name"> Name:</label>
                 <input type="text" name="first_name" id="first_name" required>
+            </div>
+            <div class="form-group">
+                <label for="designation">Designation:</label>
+                <input type="text" name="designation" id="designation" required>
+            </div>
+
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email" required>
+                @error("email") <span class="error">{{ $message }}</span> @enderror
+            </div>
+
+            <div class="form-group">
+                <label for="password">Employee Login Password:</label>
+                <input type="password" name="password" id="password" required>
+            </div>
+
+            <button type="submit" class="submit-btn">Save Employee</button>
+        </form>
+    </div>
+</div>
+
+<!-- Employee Edit Modal -->
+<div id="editemployeeModal" class="modal" >
+    <div class="modal-content">
+        <span class="close" id="close-modal">&times;</span>
+        <h2>Modify Employee data</h2>
+
+        <form action="{{ route('comapny.employee.update') }}" method="POST">
+            @csrf
+            <div class="form-group">
+                <label for="first_name"> Name:</label>
+                <input type="text" name="first_name" id="first_name" required>
+            </div>
+            <div class="form-group">
+                <label for="designation">Designation:</label>
+                <input type="text" name="designation" id="designation" required>
             </div>
 
 
@@ -220,23 +268,43 @@ input[type="password"] {
 
 <script>
     const modal = document.getElementById('employeeModal');
+    const editModal = document.getElementById('editemployeeModal');
+    const editButton=document.getElementById("employee-edit");
     const btn = document.getElementById('addEmployeeBtn');
     const span = document.getElementsByClassName('close')[0];
+    const closeModal=document.getElementById("close-modal")
+
+
+    function setModalData(id){
+        for(let i=0;i<)
+    }
 
     // Open modal
     btn.onclick = function() {
         modal.style.display = 'block';
     }
 
+    editButton.onclick=function(){
+        console.log("clicked");
+        editModal.style.display="block"
+    }
     // Close modal on X click
     span.onclick = function() {
+      
         modal.style.display = 'none';
+         editModal.style.display="none"
+    }
+
+    closeModal.onclick=function(){
+        console.log("clicked");
+        editModal.style.display="none";
     }
 
     // Close modal when clicking outside
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = 'none';
+            editModal.style.display="none"
         }
     }
 </script>
