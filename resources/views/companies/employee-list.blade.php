@@ -31,7 +31,7 @@
                         <td>{{ $user->designation }}</td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->created_at}}</td>
-                        <td><button > View</button><button  id="employee-edit" style="background-color: bluephp">Edit</button>
+                        <td><button > View</button><button onclick="setEditEmployeeData({{$user->id}})"  id="employee-edit" style="background-color: blue">Edit</button>
                             <form action="{{route("company.remove.employee")}}" method="POST" style="display: inline">
                                @csrf
                                @method("delete") 
@@ -50,13 +50,13 @@
 <!-- Employee Add Modal -->
 <div id="employeeModal" class="modal">
     <div class="modal-content">
-        <span class="close">&times;</span>
+        <span class="close" id="close-add-modal">&times;</span>
         <h2>Add New Employee</h2>
 
         <form action="{{ route('comapny.employee.register') }}" method="POST">
             @csrf
             <div class="form-group">
-                <label for="first_name"> Name:</label>
+                <label for="first_name">Name:</label>
                 <input type="text" name="first_name" id="first_name" required>
             </div>
             <div class="form-group">
@@ -91,23 +91,23 @@
             @csrf
             <div class="form-group">
                 <label for="first_name"> Name:</label>
-                <input type="text" name="first_name" id="first_name" required>
+                <input type="text" name="edit_first_name" id="first_name" required>
             </div>
             <div class="form-group">
                 <label for="designation">Designation:</label>
-                <input type="text" name="designation" id="designation" required>
+                <input type="text" name="edit_designation" id="designation" required>
             </div>
 
 
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" name="email" id="email" required>
+                <input type="email" name="edit_email" id="email" required>
                 @error("email") <span class="error">{{ $message }}</span> @enderror
             </div>
 
             <div class="form-group">
                 <label for="password">Employee Login Password:</label>
-                <input type="password" name="password" id="password" required>
+                <input type="password" name="edit_password" id="password" required>
             </div>
 
             <button type="submit" class="submit-btn">Save Employee</button>
@@ -273,19 +273,28 @@ input[type="password"] {
     const btn = document.getElementById('addEmployeeBtn');
     const span = document.getElementsByClassName('close')[0];
     const closeModal=document.getElementById("close-modal")
+    const closeBtn=document.getElementById("close-add-modal");
 
-
-    function setModalData(id){
-        for(let i=0;i<)
-    }
-
+    const employeedata=@json($users)
+    
     // Open modal
     btn.onclick = function() {
+        console.log("button cli")
         modal.style.display = 'block';
     }
 
+    function setEditEmployeeData(id){  
+        console.log("executing",id)
+        for(let i=0;i<employeedata.length;i++){
+            if(employeedata[i].id==id){
+                document.getElementById("edit_first_name").value=employeedata[i].name;
+            }
+        }
+
+    }
     editButton.onclick=function(){
-        console.log("clicked");
+        console.log(employeedata);
+        
         editModal.style.display="block"
     }
     // Close modal on X click
@@ -295,8 +304,15 @@ input[type="password"] {
          editModal.style.display="none"
     }
 
+    closeBtn.onclick=function(){
+        console.log("clicked successfully");
+        modal.style.display = 'none';
+    }
+
+
     closeModal.onclick=function(){
         console.log("clicked");
+        
         editModal.style.display="none";
     }
 
