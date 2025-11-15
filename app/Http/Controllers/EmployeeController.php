@@ -28,11 +28,24 @@ class EmployeeController extends Controller
         ]);
         User::create([
             "name"=>$request->first_name,
+            "designation"=>$request->designation,
             "email"=>$request->email,
             "password"=>$request->password,
             "company_id"=>session("company_id"),
         ]);
 
         return redirect()->route("company.employees");
+    }
+
+
+    //removing the employee
+    public function update(Request $request){
+        dd($request);
+    }
+
+    public function remove_employee(Request $request){
+        
+        $result=User::where("id","=",$request->employee_id)->delete();
+        return redirect()->back();
     }
 }

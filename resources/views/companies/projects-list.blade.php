@@ -1,3 +1,26 @@
+@php
+
+
+foreach ($projects as $index => $project) {
+ 
+
+    if(  $projects[$index]->project_head_id==null){
+   
+
+         $projects[$index]->project_head_name="Not assigned";
+    }else{
+
+
+
+        $projects[$index]->project_head_name=get_project_head_data($project->project_head_id);
+    }
+
+}
+
+
+
+
+@endphp
 <x-company-layout>
 
 @if(count($projects) == 0)
@@ -9,6 +32,8 @@
     <div class="employee-section">
         <div class="header-row">
             <h2>List of Projects</h2>
+            @error("project_head_error")<x-danger-message msg={{$message}} />@enderror
+            @error("project_name")<x-danger-message msg={{$message}} />@enderror
             <button id="addEmployeeBtn">Add new project</button>
         </div>
 
@@ -30,9 +55,11 @@
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $project->project_name }} </td>
                         <td>{{Str::limit($project->description, 50)  }}</td>
-                        <td>{{$project->project_head}}</td>
+                        <td>{{$project->project_head_name}}</td>
+                        {{-- <td>project_head</td> --}}
                         <td>{{ $project->created_at}}</td>
-                        <td><button > View</button><button  style="background-color: bluephp">Edit</button>
+                        <td><button > View</button><button type="button" class="btn btn-primary" onclick="window.location.href='{{ route('company.update.project', $project->id) }}'"> Edit</button>
+
                         <form action="{{ route('company.delete.project', $project->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
@@ -46,10 +73,11 @@
                 @endforeach
             </tbody>
         </table>
+       
     </div>
 @endif
 
-<!-- Employee Add Modal -->
+<!-- Project Add Modal -->
 <div id="employeeModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
@@ -72,14 +100,15 @@
 
             <div class="form-group">
                 <label for="project_head">Add a project head:</label>
-                <select name="project_head">
+                <select name="project_head_id" >
                     <option>Select</option>
                    
                     @foreach($employees as $employee)
-                    <option>{{$employee->name}}</option>
+                    <option value={{$employee->id}}>{{$employee->name}}</option>
 
                     @endforeach
                 </select>
+               
             </div>
 
             <button type="submit" class="submit-btn">Save Employee</button>

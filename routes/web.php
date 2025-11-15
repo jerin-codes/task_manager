@@ -26,8 +26,14 @@ Route::post("/company-register",[AuthController::class,"company_register"])->nam
 //company dashboard and other functionalities related routes.
 Route::get("/company-dashboard",[CompanyDashBoardController::class,"index"])->name("company.dashboard");
 Route::get("/company-employees",[EmployeeController::class,"index"])->name("company.employees");
+Route::post("/update-employee",[EmployeeController::class,"update"])->name("comapny.employee.update");
+
 Route::post("/add-employee",[EmployeeController::class,"register_employee"])->name("comapny.employee.register");
+Route::delete("/remove-employee",[EmployeeController::class,"remove_employee"])->name("company.remove.employee");
 Route::get("/company-projects",[ProjectsController::class,"index"])->name("company.projects");
 Route::post("/create-company-project",[ProjectsController::class,"create_project"])->name("company.create.project");
 Route::delete("/delete-company-project/{project_id}",[ProjectsController::class,"delete_project"])->name("company.delete.project");
-
+Route::get("/update-project/{id}",[ProjectsController::class,"update_project"])->name("company.update.project");
+Route::post("/update-project-details",[ProjectsController::class,"update_project_data"])->name("company.update.project.details");
+Route::post("/add-project-worker",[ProjectsController::class,"add_new_worker"])->name("company.project.add.worker");
+Route::delete("/remove-emp",[ProjectsController::class,"remove_employee"])->name("remove_from_project");
