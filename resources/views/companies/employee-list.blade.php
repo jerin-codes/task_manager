@@ -31,7 +31,7 @@
                         <td>{{ $user->designation }}</td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->created_at}}</td>
-                        <td><button > View</button><button onclick="setEditEmployeeData({{$user->id}})"  id="employee-edit" style="background-color: blue">Edit</button>
+                        <td><button > View</button><button onclick="setEditEmployeeData({{$user->id}})"  style="background-color: blue">Edit</button>
                             <form action="{{route("company.remove.employee")}}" method="POST" style="display: inline">
                                @csrf
                                @method("delete") 
@@ -89,25 +89,26 @@
 
         <form action="{{ route('comapny.employee.update') }}" method="POST">
             @csrf
+            <input type="hidden" name="id" id="employee-id">
             <div class="form-group">
                 <label for="first_name"> Name:</label>
-                <input type="text" name="edit_first_name" id="first_name" required>
+                <input type="text" name="edit_first_name" id="edit-first-name" required>
             </div>
             <div class="form-group">
                 <label for="designation">Designation:</label>
-                <input type="text" name="edit_designation" id="designation" required>
+                <input type="text" name="edit_designation" id="edit-designation" required>
             </div>
 
 
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" name="edit_email" id="email" required>
+                <input type="email" name="edit_email" id="edit-email" required>
                 @error("email") <span class="error">{{ $message }}</span> @enderror
             </div>
 
             <div class="form-group">
-                <label for="password">Employee Login Password:</label>
-                <input type="password" name="edit_password" id="password" required>
+                <label for="password">Update employee login password if needed:</label>
+                <input type="password" minlength="5" name="edit_password" id="edit-password">
             </div>
 
             <button type="submit" class="submit-btn">Save Employee</button>
@@ -279,20 +280,33 @@ input[type="password"] {
     
     // Open modal
     btn.onclick = function() {
-        console.log("button cli")
+        
         modal.style.display = 'block';
     }
 
+    
+
     function setEditEmployeeData(id){  
-        console.log("executing",id)
+        // console.log("function is executing");
+          editModal.style.display="block"
         for(let i=0;i<employeedata.length;i++){
             if(employeedata[i].id==id){
-                document.getElementById("edit_first_name").value=employeedata[i].name;
+                // console.log(employeedata[i]);
+                document.getElementById("employee-id").value=id;
+                document.getElementById("edit-first-name").value=employeedata[i].name;
+                document.getElementById("edit-designation").value=employeedata[i].designation;
+                document.getElementById("edit-email").value=employeedata[i].email;
             }
         }
 
     }
+
+    closeModal.addEventListener("click", function () {
+            editModal.style.display="none";
+
+   });
     editButton.onclick=function(){
+      
         console.log(employeedata);
         
         editModal.style.display="block"
@@ -310,11 +324,6 @@ input[type="password"] {
     }
 
 
-    closeModal.onclick=function(){
-        console.log("clicked");
-        
-        editModal.style.display="none";
-    }
 
     // Close modal when clicking outside
     window.onclick = function(event) {

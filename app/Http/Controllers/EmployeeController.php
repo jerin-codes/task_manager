@@ -40,7 +40,23 @@ class EmployeeController extends Controller
 
     //removing the employee
     public function update(Request $request){
-        dd($request);
+        $user=User::find($request->id);
+       
+        if(!empty($request->edit_password)){
+            // dd("yes executing");
+            $user->password=$request->edit_password;
+
+        }
+        
+        
+        $user->name=$request->edit_first_name;
+        $user->email=$request->edit_email;
+        $user->designation=$request->edit_designation;
+        
+        
+        $user->save();
+        return redirect()->back();
+    
     }
 
     public function remove_employee(Request $request){
