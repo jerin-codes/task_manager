@@ -96,7 +96,7 @@
             <p>Welcome {{session("company_name")}}</p>
             
             <ul>
-                
+               <li ><form action="{{ route("company.logout") }}" method="post">@csrf<button>Logout</button></form></li> 
             </ul>
     </header>
 

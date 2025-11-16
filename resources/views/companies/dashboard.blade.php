@@ -1,4 +1,4 @@
-<x-company-layout>
+<x-layouts.company-layout>
 
 
 
@@ -8,7 +8,7 @@
         <button><a href="{{route("company.employees")}}">View Employees</a></button> <button><a href="{{route("company.projects")}}">View Projects</a></button>
     </div>
 </div>
-</x-company-layout>
+</x-layouts.company-layout>
 
 <style>
 .employee-list button {

@@ -1,4 +1,4 @@
-<x-company-layout>
+<x-layouts.company-layout>
 
 @if(count($users) == 0)
     <div class="zero-employees">
@@ -116,7 +116,7 @@
     </div>
 </div>
 
-</x-company-layout>
+</x-layouts.company-layout>
 
 <style>
 .zero-employees {

@@ -21,7 +21,7 @@ foreach ($projects as $index => $project) {
 
 
 @endphp
-<x-company-layout>
+<x-layouts.company-layout>
 
 @if(count($projects) == 0)
     <div class="zero-employees">
@@ -116,7 +116,7 @@ foreach ($projects as $index => $project) {
     </div>
 </div>
 
-</x-company-layout>
+</x-layouts.company-layout>
 
 <style>
 .zero-employees {

@@ -1,4 +1,4 @@
-<x-company-layout>
+<x-layouts.company-layout>
 @php
     $project_head_name = "";
     foreach ($project_employees as $index => $employee) {
@@ -101,7 +101,7 @@
         </table>
     </div>
 </div>
-</x-company-layout>
+</x-layouts.company-layout>
 
 <style>
 /* Overall Container */
