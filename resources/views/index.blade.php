@@ -11,7 +11,7 @@
     <div class="index-page">
 
         <button><a href="company-login">Company login</a></button>
-         <button><a href="#">Employee login</a></button>
+         <button onclick="window.location.href='/employee-login'">Employee login</button>
 
     </div>
 </body>

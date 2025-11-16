@@ -54,5 +54,45 @@ class AuthController extends Controller
         return redirect()->route("company.dashboard");  
         
     }
+
+    public function company_logout(Request $request){
+
+        $request->session()->invalidate();
+        return redirect("/");
+
+    }
+
+
+//Employee Authentication other functionalities
+
+    function employee_login(Request $request){
+                
+       $fields= $request->validate([
+            "email"=>["required","email"],
+            "password"=>["required"]
+        ]);
+
+        if(Auth::attempt($fields,$request->remember)){
+                return redirect()->route("employee.dashboard");
+        }else{
+            return back()->withErrors([
+                "login_failed"=>"Login failed invalid credinitials"
+            ]);
+        }
+        
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
 }
 

@@ -37,3 +37,14 @@ Route::get("/update-project/{id}",[ProjectsController::class,"update_project"])-
 Route::post("/update-project-details",[ProjectsController::class,"update_project_data"])->name("company.update.project.details");
 Route::post("/add-project-worker",[ProjectsController::class,"add_new_worker"])->name("company.project.add.worker");
 Route::delete("/remove-emp",[ProjectsController::class,"remove_employee"])->name("remove_from_project");
+Route::post("/company-logout",[AuthController::class,"company_logout"])->name("company.logout");
+
+
+//Employee login and employee related routes
+Route::get("/employee-login",function(){
+    return view("auth.employee-login");
+});
+Route::post("/employee-login",[AuthController::class,"employee_login"])->name("employee.login");
+Route::get("/employee-dahboard",function(){
+    return view("employee.dashboard");
+})->name("employee.dashboard");
