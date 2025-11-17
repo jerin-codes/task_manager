@@ -1,10 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CompanyDashBoardController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ProjectsController;
-use App\Http\Controllers\CompanyDashBoardController;
+use App\Http\Controllers\ProjectTaskController;
+use Illuminate\Support\Facades\Route;
+
 
 Route::get('/', function () {
     return view('index');
@@ -41,10 +43,23 @@ Route::post("/company-logout",[AuthController::class,"company_logout"])->name("c
 
 
 //Employee login and employee related routes
-Route::get("/employee-login",function(){
-    return view("auth.employee-login");
+
+Route::middleware("auth")->group(function(){
+    
+   
+    Route::get("/employee-dahboard",function(){
+        return view("employee.dashboard");
+    })->name("employee.dashboard");
+    Route::post("/employee-logout",[AuthController::class,"employee_logout"])->name("employee.logout");
+    Route::get("/project-view/{id}",[ProjectTaskController::class,"get_project_view"])->name("project.view");
+    Route::post("/project-create-task",[ProjectTaskController::class, "create_new_task"])->name("project.create.task");
 });
-Route::post("/employee-login",[AuthController::class,"employee_login"])->name("employee.login");
-Route::get("/employee-dahboard",function(){
-    return view("employee.dashboard");
-})->name("employee.dashboard");
+
+
+
+Route::middleware("guest")->group(function(){
+     Route::post("/employee-login",[AuthController::class,"employee_login"])->name("employee.login");
+    Route::get("/employee-login",function(){
+        return view("auth.employee-login");
+    });
+});

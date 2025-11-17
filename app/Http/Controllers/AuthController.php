@@ -26,9 +26,7 @@ class AuthController extends Controller
            
             if($request->password==$company[0]->password){
                    
-                    session(['company_id' => $company[0]->company_id,"company_name"=>$company[0]->company_name]);
-                   
-                    // dd($value);
+                    session(['company_id' => $company[0]->id,"company_name"=>$company[0]->company_name]);
                     return redirect()->route("company.dashboard");
             }else{
                 return back()->withErrors([
@@ -71,10 +69,11 @@ class AuthController extends Controller
             "email"=>["required","email"],
             "password"=>["required"]
         ]);
-
+       
         if(Auth::attempt($fields,$request->remember)){
                 return redirect()->route("employee.dashboard");
         }else{
+            
             return back()->withErrors([
                 "login_failed"=>"Login failed invalid credinitials"
             ]);
@@ -84,6 +83,14 @@ class AuthController extends Controller
 
     }
 
+
+    function employee_logout(Request $request){
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect("/");
+    }
 
 
 

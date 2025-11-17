@@ -1,4 +1,4 @@
-<x-login-layout>
+<x-layouts.login-layout>
 <div class="login">
 <div class="card">
   
@@ -29,8 +29,7 @@
     </form>
 </div>
 </div>
-</x-login-layout>
-
+</x-layouts.login-layout>
 <style>
     .login {
       display: flex;
@@ -69,3 +68,4 @@
    
 
 </style>
+
