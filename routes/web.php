@@ -53,6 +53,8 @@ Route::middleware("auth")->group(function(){
     Route::post("/employee-logout",[AuthController::class,"employee_logout"])->name("employee.logout");
     Route::get("/project-view/{id}",[ProjectTaskController::class,"get_project_view"])->name("project.view");
     Route::post("/project-create-task",[ProjectTaskController::class, "create_new_task"])->name("project.create.task");
+    //change status of the task/
+    Route::post("/update-task-status",[ProjectTaskController::class, "update_project_status"])->name("project.update.task.status");
 });
 
 

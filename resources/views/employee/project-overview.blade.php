@@ -1,4 +1,5 @@
 @php
+    // @dd($data);
    $count=[ "to_do_count"=>0,
     "in_progress_count"=>0,
     "ready_for_qa_count"=>0,
@@ -11,7 +12,7 @@
 
             case "in_progress":$count["in_progress_count"]++;
                                 break;
-            case "ready_for_qa":$count["ready_for_qa"]++;    
+            case "ready_for_qa":$count["ready_for_qa_count"]++;    
                                 break;
             case "qa_passed":$count["qa_passed_count"]++;
                                 break;                
@@ -24,6 +25,9 @@
 @endphp
 
 <x-layouts.employee_layouts.employee-layout>
+    <div style="display:flex;justify-content:center;padding:30px 0px;">
+    <h4>{{ $data["project_details"][0]->project_name }}</h4>
+    </div>
 @if(count($data["tasks"])==0)
 <div class="empty-tasks">
     <div style="display:flex;flex-direction:column;gap:10px">
@@ -46,7 +50,15 @@
         <h4>QA passed:{{ $count["qa_passed_count"] }}</h4>
     </div>
 </div>
-<div style="display:flex;margin-top:80px">
+<div style="display:flex;justify-content:flex-end;gap:7px;">
+<div style="display:flex;justify-content:flex-end;padding:20px 0px;">
+ <button class="project-view-button" >Apply Filter</button>
+</div>
+<div style="display:flex;justify-content:flex-end;padding:20px 0px;">
+ <button class="project-view-button" onclick="showModal()">Create new task</button>
+</div>
+</div>
+ <div style="display:flex;margin-top:3px">
    
     <div class="project-status-table">
         <div style="border:1px solid;background-color:#b58bc7;display:flex;justify-content:center">
@@ -54,32 +66,135 @@
             
         </div>
         @foreach ($data["tasks"] as $task)
-            
+            @if($task->status=="to_do")
         <div class="project-status-innner-card">
-            <div style="display:flex;justify-content:center;">
+            <div style="display:flex;flex-direction:column;justify-content:center;align-items:center">
+                <h3>#{{ $task->task_number }}</h3>
                 <h3 >{{ $task->name }}</h3>
             </div> <br>
                 <h5>Assigned to : {{get_employee_data($task->assigned_employee_id)->name  }}</h5>
                 <h5>Created at :{{ $task->created_at }}</h5>
+                <h5>Last updation:{{ $task->updated_at }}</h5>
+                <br>
+                <div style="display:flex;">
+                <h4>Change Status </h4><form action="{{ route("project.update.task.status") }}" method="post">
+                    @csrf
+                    <input type="hidden" name="task_id" value={{$task->id  }}>
+                    <select name="task_status" onchange="this.form.submit()" required>
+                        <option value="">Change task status</option>
+                    <option value="to_do">To do</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="ready_for_qa">Ready For  QA</option>
+                        <option value="qa_passed">QA Passes</option>
+                    </select>
+                </form>
             </div>
+                
+            </div>
+            @endif
         @endforeach
     </div>
     <div class="project-status-table">
         <div style="border:1px solid;background-color:#b58bc7;display:flex;justify-content:center">
             <h3>In progress</h3>
         </div>
+        @foreach ($data["tasks"] as $task)
+            @if($task->status=="in_progress")
+        <div class="project-status-innner-card">
+            <div style="display:flex;flex-direction:column;justify-content:center;align-items:center">
+                <h3>#{{ $task->task_number }}</h3>
+                <h3 >{{ $task->name }}</h3>
+            </div> <br>
+                <h5>Assigned to : {{get_employee_data($task->assigned_employee_id)->name  }}</h5>
+                <h5>Created at :{{ $task->created_at }}</h5>
+                <h5>Last updation:{{ $task->updated_at }}</h5>
+                <br>
+                <div style="display:flex;">
+                <h4>Change Status </h4><form action="{{ route("project.update.task.status") }}" method="post">
+                    @csrf
+                    <input type="hidden" name="task_id" value={{$task->id  }}>
+                    <select name="task_status" onchange="this.form.submit()" required>
+                          <option value="">Change task status</option>
+
+                    <option value="to_do">To do</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="ready_for_qa">Ready For  QA</option>
+                        <option value="qa_passed">QA Passes</option>
+                    </select>
+                </form>
+            </div>
+                
+            </div>
+            @endif
+        @endforeach
     </div >
 
     <div class="project-status-table">
         <div style="border:1px solid;background-color:#b58bc7;display:flex;justify-content:center">
             <h3>Ready for QA</h3>
         </div>
+        @foreach ($data["tasks"] as $task)
+            @if($task->status=="ready_for_qa")
+        <div class="project-status-innner-card">
+            <div style="display:flex;flex-direction:column;justify-content:center;align-items:center">
+                <h3>#{{ $task->task_number }}</h3>
+                <h3 >{{ $task->name }}</h3>
+            </div> <br>
+                <h5>Assigned to : {{get_employee_data($task->assigned_employee_id)->name  }}</h5>
+                <h5>Created at :{{ $task->created_at }}</h5>
+                <h5>Last updation:{{ $task->updated_at }}</h5>
+                <br>
+                <div style="display:flex;">
+                <h4>Change Status </h4><form action="{{ route("project.update.task.status") }}" method="post">
+                    @csrf
+                    <input type="hidden" name="task_id" value={{$task->id  }}>
+                    <select name="task_status" onchange="this.form.submit()" required>
+                          <option value="">Change task status</option>
+                    <option value="to_do">To do</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="ready_for_qa">Ready For  QA</option>
+                        <option value="qa_passed">QA Passes</option>
+                    </select>
+                </form>
+            </div>
+                
+            </div>
+            @endif
+        @endforeach
     </div >
 
     <div class="project-status-table">
             <div style="border:1px solid;background-color:#b58bc7;display:flex;justify-content:center">
             <h3>QA passed</h3>
         </div>
+        @foreach ($data["tasks"] as $task)
+            @if($task->status=="qa_passed")
+        <div class="project-status-innner-card">
+            <div style="display:flex;flex-direction:column;justify-content:center;align-items:center">
+                <h3>#{{ $task->task_number }}</h3>
+                <h3 >{{ $task->name }}</h3>
+            </div> <br>
+                <h5>Assigned to : {{get_employee_data($task->assigned_employee_id)->name  }}</h5>
+                <h5>Created at :{{ $task->created_at }}</h5>
+                <h5>Last updation:{{ $task->updated_at }}</h5>
+                <br>
+                <div style="display:flex;">
+                <h4>Change Status </h4><form action="{{ route("project.update.task.status") }}" method="post">
+                    @csrf
+                    <input type="hidden" name="task_id" value={{$task->id  }}>
+                    <select name="task_status" onchange="this.form.submit()" required>
+                          <option value="">Change task status</option>
+                    <option value="to_do">To do</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="ready_for_qa">Ready For  QA</option>
+                        <option value="qa_passed">QA Passes</option>
+                    </select>
+                </form>
+            </div>
+                
+            </div>
+            @endif
+        @endforeach
     </div >
 </div>
 @endif

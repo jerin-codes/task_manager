@@ -7,6 +7,8 @@ foreach($committed_projects as $index=>$project){
     $project_head=get_project_head_data($project->project_head_id);
     $committed_projects[$index]->project_head_name=$project_head;
 }   
+
+$ongoing_tasks=get_employee_ongoing_tasks(auth()->user()->id);;
 @endphp
 
 <div style="display:flex;gap:278px;justify-content:center">
@@ -36,12 +38,22 @@ foreach($committed_projects as $index=>$project){
     <div class="tasks">
             <div style="display:flex;gap:10px">
             <h3>Your ongoing tasks</h3>
-            <select name="task_status">
-                <option>To do</option>
-                <option>In progress</option>
-                <option>Ready for QA</option>
-                <option>Cancelled tasks</option>
-            </select>
+           
+        </div>
+        <div style="margin-top:30px">
+            @foreach ($ongoing_tasks as $task )
+            <div class="ongoing-task-card">
+                <div style="display:flex;justify-content:flex-end">
+                    <div style="background-color:#00ff00;">
+                    <h6>{{ $task->status }}</h6>
+                    </div> 
+                </div>
+                <h4>Task #{{ $task->task_number }}</h4>
+                <h4>Project :{{ get_project_name($task->project_id)->project_name }}</h4>
+                <h5>{{ $task->description }}</h5>
+                <h5>Craeted at:{{ $task->created_at  }} </h5>
+            </div>
+                @endforeach
         </div>
         </div>  
 
@@ -75,5 +87,13 @@ foreach($committed_projects as $index=>$project){
     cursor:pointer;
 }
 
+
+.ongoing-task-card{
+    padding:10px 20px;
+    background-color:#c2adc9;
+    margin-top:10px;
+
+
+}
 
 </style>

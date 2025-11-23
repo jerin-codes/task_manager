@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 
     function get_employee_data($id){
         $employee=DB::table("users")->where("id","=",$id)->first();
-        // dd($employee);
+            // dd($employee);
         return $employee;
     }
 
@@ -36,5 +36,18 @@ use Illuminate\Support\Facades\DB;
         return $company_employees;
     }    
     
+
+    //get employee all tasks 
+    function get_employee_ongoing_tasks($id){
+        $tasks=DB::table("project_tasks")->where("assigned_employee_id","=",$id)->get()->toArray();
+        
+        return $tasks;
+    }
+
+    //get project details
+    function get_project_name($id){
+        $project_details=DB::table("company_projects")->where("id","=",$id)->first();
+        return $project_details;
+    }
 
 ?>

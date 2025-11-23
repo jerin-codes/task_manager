@@ -10,7 +10,8 @@ use function Symfony\Component\Clock\now;
 
 class ProjectTaskController extends Controller
 {
-    public function get_project_view($id){
+    public function get_project_view($id){ 
+
         $result=[];
         $project=DB::table("company_projects")->where("id","=",$id)->get();
         $result["project_details"]=$project;
@@ -39,5 +40,12 @@ class ProjectTaskController extends Controller
         // dd($fields);
         $result=DB::table("project_tasks")->insert($fields);
         return redirect()->back();
+    }
+
+    public function update_project_status(Request $request){
+        // dd($request);
+      DB::table('project_tasks')->where('id', $request->task_id)->update(['status' => $request->task_status]);
+      return redirect()->back();
+
     }
 }
