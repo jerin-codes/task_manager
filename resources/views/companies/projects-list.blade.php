@@ -111,7 +111,7 @@ foreach ($projects as $index => $project) {
                
             </div>
 
-            <button type="submit" class="submit-btn">Save Employee</button>
+            <button type="submit" class="submit-btn">Create Project</button>
         </form>
     </div>
 </div>
