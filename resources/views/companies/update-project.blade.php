@@ -56,7 +56,7 @@
             @method("POST")
         <input type="hidden" name="project_id" value="{{$project->id}}">
         <select name="employee_id" required>            
-            <option>Choose your employee</option>
+            <option value="">Choose your employee</option>
             @foreach($not_in_project_employees as $index=>$employee)
             <option value="{{$employee->id}}">{{$employee->name}}</option>
             @endforeach

@@ -21,7 +21,7 @@ class ProjectTaskController extends Controller
         $result["tasks"]=$tasks;
       
 
-        return view("employee.project-overview",["data"=>$result]);
+        return view("employee.project-overview",["data"=>$result,"filter"=>false]);
     }
 
     public function create_new_task(Request $request){
@@ -47,5 +47,49 @@ class ProjectTaskController extends Controller
       DB::table('project_tasks')->where('id', $request->task_id)->update(['status' => $request->task_status]);
       return redirect()->back();
 
+    }
+
+    public function apply_filter(Request $request){
+        // dd($request);
+        $filter=true; 
+        $result=[];
+        $project=DB::table("company_projects")->where("id","=",$request->project_id)->get();
+        $result["project_details"]=$project;
+
+        if($request->filter_date_from !=null && $request->filter_date_to!=null){
+             $tasks = DB::table("project_tasks")
+                    ->where("project_id", $request->project_id)
+                    ->whereBetween("created_at", [
+                        $request->filter_date_from,
+                        $request->filter_date_to
+                        ])
+                    ->get()->toArray();
+                    
+        }else{
+
+            $tasks=DB::table("project_tasks")->where("project_id","=",$request->project_id)->get()->toArray();
+        }
+
+        // dd($tasks);
+        if($request->assigned_employee!=null){
+
+            foreach($tasks as $index=>$task){
+                if($task->assigned_employee_id !=$request->assigned_employee){
+                    unset($tasks[$index]);
+                }
+            }
+        }
+        
+        if($request->filter_status !=null){
+            foreach($tasks as $index=>$task){
+                if($task->status != $request->filter_status){
+                    unset($tasks[$index]);
+                }
+            }
+        }
+        $result["tasks"]=$tasks;
+        
+
+        return view("employee.project-overview",["data"=>$result,"filter"=>$filter]);
     }
 }

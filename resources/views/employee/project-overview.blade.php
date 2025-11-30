@@ -31,8 +31,13 @@
 @if(count($data["tasks"])==0)
 <div class="empty-tasks">
     <div style="display:flex;flex-direction:column;gap:10px">
+        @if($filter)
+        <h3>Oops.. no projects tasks based on the above filter</h3>
+        <button class="project-view-button" onclick="window.location.href='{{ route('project.view', $data['project_details'][0]->id) }}'">Clear Filter</button>        
+        @else
         <h3>Oops.. project is not yet started</h3>
         <button class="project-view-button" onclick="showModal()">Create first task</button>
+        @endif
     </div>
 </div>
 @else
@@ -52,7 +57,11 @@
 </div>
 <div style="display:flex;justify-content:flex-end;gap:7px;">
 <div style="display:flex;justify-content:flex-end;padding:20px 0px;">
- <button class="project-view-button" >Apply Filter</button>
+    @if($filter)
+     <button class="project-view-button" onclick="window.location.href='{{ route('project.view', $data['project_details'][0]->id) }}'">Clear Filter</button>        
+    @else
+     <button class="project-view-button" onclick="showFilterModal()" >Apply Filter</button>
+ @endif
 </div>
 <div style="display:flex;justify-content:flex-end;padding:20px 0px;">
  <button class="project-view-button" onclick="showModal()">Create new task</button>
@@ -199,7 +208,9 @@
 </div>
 @endif
 {{-- Create new task model --}}
-<x-create-task :data="$data"/>
+<x-employee-modals.create-task :data="$data"/>
+<x-employee-modals.filter :data="$data"/>
+
 
 </x-layouts.employee_layouts.employee-layout>
 
@@ -356,5 +367,12 @@ function showModal() {
 
 function closeModal() {
     document.getElementById("create-task-modal").style.display = "none";
+    document.getElementById("apply-filter-modal").style.display="none";
 }
+
+function showFilterModal(){
+    document.getElementById("apply-filter-modal").style.display="flex";
+}
+
+
 </script>
