@@ -147,7 +147,7 @@
         </button>
 
         <div class="dropdown-box" x-show="open" @click.outside="open = false">
-            <a href="#">My Profile</a>
+            <a href="{{ route("") }}">My Profile</a>
             <a href="#">Settings</a>
 
             <form action="{{ route("employee.logout") }}" method="POST">

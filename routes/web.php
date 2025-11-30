@@ -55,6 +55,10 @@ Route::middleware("auth")->group(function(){
     Route::post("/project-create-task",[ProjectTaskController::class, "create_new_task"])->name("project.create.task");
     //change status of the task/
     Route::post("/update-task-status",[ProjectTaskController::class, "update_project_status"])->name("project.update.task.status");
+    Route::post("/apply-filter",[ProjectTaskController::class, "apply_filter"])->name("projects.apply.filter");
+    Route::get("/employee-profile",function(){
+        return view("")
+    })
 });
 
 
